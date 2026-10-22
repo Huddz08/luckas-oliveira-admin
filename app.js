@@ -1,4 +1,4 @@
-/* Luckas Studio Admin: demonstration only. No client credentials or links leave this page. */
+/* Edição do site público via Worker. Galerias privadas seguem em modo de demonstração. */
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
@@ -32,6 +32,117 @@
   ];
   const names = {overview:'Visão geral',galleries:'Galerias de clientes',create:'Nova galeria',catalog:'Serviços e pacotes',promotions:'Promoções',appearance:'Aparência do site',testimonials:'Depoimentos',settings:'Configurações'};
   let filter = 'all', lastCreated = null, previewGallery = null, selectedPhotos = new Set(), toastTimer = null;
+  const CONTENT_API = 'https://luckas-fotografia-api.hudsonamorim08.workers.dev/api/content';
+  const PUBLIC_CONTENT = 'https://huddz08.github.io/Luckas-oliveira-fotografo-teste/content/';
+  const CONTENT_NAMES = ['services','portfolio','testimonials','about','appearance','promotion'];
+  let currentContent = null;
+  let currentRevision = null;
+  let contentReady = false;
+  let dirty = false;
+  function setSyncMessage(message) { $('syncStatus').textContent = message; }
+  function setDirty() {
+    dirty = true;
+    $('publishChanges').disabled = !contentReady;
+    setSyncMessage('Alterações pendentes. Clique em “Publicar alterações” para atualizar o portfólio.');
+  }
+  async function loadContent() {
+    setSyncMessage('Buscando conteúdo e configurações do site…');
+    try {
+      const response = await fetch(CONTENT_API, {cache:'no-store'});
+      if (!response.ok) throw new Error('A API não respondeu corretamente.');
+      const live = await response.json();
+      currentRevision = live.revision || null;
+      if (live.configured && live.content) {
+        currentContent = live.content;
+      } else {
+        const data = await Promise.all(CONTENT_NAMES.map(async name => {
+          const item = await fetch(PUBLIC_CONTENT + name + '.json', {cache:'no-store'});
+          if (!item.ok) throw new Error('Não foi possível ler o conteúdo inicial: ' + name);
+          return item.json();
+        }));
+        currentContent = Object.fromEntries(CONTENT_NAMES.map((name,i)=>[name,data[i]]));
+      }
+      services.splice(0, services.length, ...currentContent.services.map((s,i) => {
+        const album = currentContent.portfolio.find(p=>p.serviceId===s.id);
+        const cover = album?.cover || '/assets/portrait.webp';
+        return {id:i+1,publicId:s.id,name:s.title,category:s.category,description:s.description,
+          price:s.price,details:[...s.details],visible:s.visible,promotion:{...s.promotion},
+          image:cover.startsWith('/') ? 'https://huddz08.github.io/Luckas-oliveira-fotografo-teste'+cover : cover};
+      }));
+      promotions.splice(0,promotions.length);
+      const global = currentContent.promotion;
+      if (global.active && global.applyToAll && global.discountPercent > 0) {
+        promotions.push({id:'global',name:global.title || global.label || 'Campanha especial',serviceId:'all',discount:global.discountPercent,end:global.validUntil || ''});
+      }
+      services.forEach(s=>{
+        if (s.promotion.active && s.promotion.price > 0 && s.promotion.price < s.price) {
+          promotions.push({id:'service-'+s.id,name:s.promotion.label || 'Oferta especial',serviceId:String(s.id),
+            discount:Math.round((1-s.promotion.price/s.price)*10000)/100,end:s.promotion.validUntil || ''});
+        }
+      });
+      $('appearanceOptions').querySelectorAll('button').forEach(button => {
+        const path = '/assets/'+button.dataset.image.split('/assets/').pop();
+        button.classList.toggle('selected',currentContent.appearance.heroImage === path);
+        if (currentContent.appearance.heroImage === path) $('appearancePreview').src = button.dataset.image;
+      });
+      contentReady = true; dirty = false;
+      $('publishChanges').disabled = true;
+      setSyncMessage(live.configured ? 'Conteúdo carregado da Cloudflare. Tudo atualizado.' : 'Conteúdo inicial carregado. Você pode editar e publicar quando o KV estiver configurado.');
+      renderServices();renderPromotions();renderGalleries();
+    } catch (error) {
+      contentReady = false;
+      $('publishChanges').disabled = true;
+      setSyncMessage('Falha ao carregar dados reais: '+error.message);
+      toast('Não foi possível conectar o painel ao conteúdo público.');
+    }
+  }
+  function validPromotion(p) { return !p.end || p.end >= new Date().toISOString().slice(0,10); }
+  function buildContentForPublishing() {
+    const next = JSON.parse(JSON.stringify(currentContent));
+    next.services = services.map(s=>({
+      id:s.publicId,title:s.name,category:s.category||'ENSAIOS',description:s.description||'',
+      details:s.details,price:s.price,visible:s.visible !== false,
+      promotion:{active:false,label:'',price:0}
+    }));
+    next.portfolio = next.portfolio.filter(p=>services.some(s=>s.publicId===p.serviceId));
+    services.forEach(s=>{
+      if (!next.portfolio.some(p=>p.serviceId===s.publicId)) {
+        next.portfolio.push({serviceId:s.publicId,cover:'/assets/portrait.webp',visible:true,
+          photos:[{image:'/assets/portrait.webp',caption:'Imagem ilustrativa — aguarda fotos de Luckas'}]});
+      }
+    });
+    next.promotion = {active:false,label:'',title:'',description:'',applyToAll:false,discountPercent:0};
+    [...promotions].reverse().filter(validPromotion).forEach(p=>{
+      if (p.serviceId==='all') {
+        next.promotion = {active:true,label:p.name,title:p.name,
+          description:`Condição especial de ${p.discount}% nos serviços participantes. Consulte a disponibilidade.`,
+          applyToAll:true,discountPercent:p.discount,validUntil:p.end || null};
+      } else {
+        const service = next.services.find(s=>s.id===getService(p.serviceId)?.publicId);
+        if (service) service.promotion = {active:true,label:p.name,
+          price:Math.round(service.price*(1-p.discount/100)*100)/100,validUntil:p.end || null};
+      }
+    });
+    return next;
+  }
+  async function publishChanges() {
+    if (!contentReady || !dirty) return;
+    const button = $('publishChanges');
+    button.disabled = true; setSyncMessage('Publicando alterações…');
+    try {
+      const payload = buildContentForPublishing();
+      const result = await window.LuckasAdminAuth.publish(payload,currentRevision);
+      currentRevision = result.revision;
+      currentContent = payload;
+      dirty = false;
+      setSyncMessage('Publicado! O site público pode levar até cerca de 1 minuto para atualizar.');
+      toast('Alterações enviadas ao site público. Abra o portfólio para conferir.');
+    } catch (error) {
+      setSyncMessage('Falha ao publicar: '+error.message);
+      toast('Não foi possível publicar: '+error.message);
+      button.disabled = false;
+    }
+  }
   const getService = id => services.find(service => service.id === Number(id));
   const typeName = mode => mode === 'selection' ? 'Seleção de fotos' : 'Entrega final';
   function toast(message) {
@@ -89,7 +200,7 @@
     if (currentPromo && (currentPromo === 'all' || services.some(s => String(s.id) === currentPromo))) $('promoService').value = currentPromo;
   }
   function renderPromotions() {
-    $('promotionsList').innerHTML = promotions.length ? promotions.map(p => `<div class="promo-item"><div><strong>${safe(p.name)}</strong><small>${p.serviceId === 'all' ? 'Todos os serviços' : safe(getService(p.serviceId)?.name || 'Serviço personalizado')} ${p.end ? ' · até '+safe(p.end.split('-').reverse().join('/')) : ''} · DEMO</small></div><span class="promo-percent">−${p.discount}%</span></div>`).join('') : '<p class="empty-state">Nenhuma campanha cadastrada.</p>';
+    $('promotionsList').innerHTML = promotions.length ? promotions.map(p => `<div class="promo-item"><div><strong>${safe(p.name)}</strong><small>${p.serviceId === 'all' ? 'Todos os serviços' : safe(getService(p.serviceId)?.name || 'Serviço personalizado')} ${p.end ? ' · até '+safe(p.end.split('-').reverse().join('/')) : ''} ${!validPromotion(p) ? ' · EXPIRADA' : ''}</small></div><span class="promo-percent">−${p.discount}%</span><button class="service-edit" type="button" data-remove-promo="${safe(p.id)}" aria-label="Remover promoção ${safe(p.name)}">Remover</button></div>`).join('') : '<p class="empty-state">Nenhuma campanha cadastrada.</p>';
   }
   function renderTestimonials() {
     $('testimonialsList').innerHTML = testimonials.map(t => `<article class="panel testimonial-item"><span class="quote-mark">“</span><blockquote>${safe(t.text)}</blockquote><strong>${safe(t.name)}</strong><small>${safe(t.service)} · RELATO FICTÍCIO</small></article>`).join('');
@@ -181,6 +292,8 @@
     $('serviceEditId').value = service?.id || '';
     $('serviceDialogTitle').innerHTML = service ? 'Editar <em>serviço.</em>' : 'Novo <em>serviço.</em>';
     $('serviceName').value = service?.name || '';
+    $('serviceCategory').value = service?.category || 'ENSAIOS';
+    $('serviceDescription').value = service?.description || '';
     $('servicePrice').value = service?.price ?? '';
     $('serviceDetails').value = service?.details.join('\n') || '';
     $('serviceDialog').showModal();
@@ -189,18 +302,27 @@
     event.preventDefault();
     if (!$('serviceForm').reportValidity()) return;
     const id = Number($('serviceEditId').value);
-    const service = getService(id) || {id:Math.max(...services.map(s => s.id))+1,image:assets.studio};
-    service.name = $('serviceName').value.trim();
+    const name = $('serviceName').value.trim();
+    const slug = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'ensaio';
+    const service = getService(id) || {
+      id:Math.max(0,...services.map(s=>s.id))+1,
+      publicId:slug+'-'+Date.now().toString(36),image:assets.studio,
+      promotion:{active:false,label:'',price:0},visible:true,
+    };
+    service.name = name;
+    service.category = $('serviceCategory').value;
+    service.description = $('serviceDescription').value.trim();
     service.price = Number($('servicePrice').value);
-    service.details = $('serviceDetails').value.split('\n').map(x=>x.trim()).filter(Boolean);
+    service.details = $('serviceDetails').value.split('\n').map(x=>x.trim()).filter(Boolean).slice(0,15).map(x=>x.slice(0,200));
     if (!getService(id)) services.push(service);
-    renderServices(); $('serviceDialog').close(); toast('Serviço atualizado na demonstração. O site público permanece inalterado.');
+    renderServices(); $('serviceDialog').close(); setDirty(); toast('Serviço alterado. Clique em Publicar alterações para atualizar o site.');
   }
   function createPromotion(event) {
     event.preventDefault();
     if (!$('promotionForm').reportValidity()) return;
     promotions.unshift({id:Date.now(),name:$('promoName').value.trim(),serviceId:$('promoService').value,discount:Number($('promoDiscount').value),end:$('promoEnd').value,sample:true});
-    $('promotionForm').reset(); renderPromotions(); toast('Promoção de demonstração cadastrada; não aparece no site público.');
+    $('promotionForm').reset(); renderPromotions(); setDirty(); toast('Promoção preparada. Clique em Publicar alterações.');
   }
   function createTestimonial(event) {
     event.preventDefault();
@@ -215,6 +337,11 @@
     if (galleryTarget) {const g = galleries.find(g=>String(g.id)===galleryTarget.dataset.preview);if(g)preparePreview(g);}
     const serviceTarget = e.target.closest('[data-edit-service]');
     if (serviceTarget) openServiceEditor(serviceTarget.dataset.editService);
+    const removePromo = e.target.closest('[data-remove-promo]');
+    if (removePromo) {
+      const index = promotions.findIndex(p=>String(p.id)===removePromo.dataset.removePromo);
+      if (index !== -1) { promotions.splice(index,1); renderPromotions();setDirty();toast('Promoção removida. Publique para atualizar o site.'); }
+    }
     const photoTarget = e.target.closest('[data-photo]');
     if (photoTarget && previewGallery?.mode==='selection') {
       const n=Number(photoTarget.dataset.photo);
@@ -253,7 +380,11 @@
   $('testimonialForm').addEventListener('submit',createTestimonial);
   document.querySelectorAll('#appearanceOptions button').forEach(el=>el.addEventListener('click',()=>{
     document.querySelectorAll('#appearanceOptions button').forEach(b=>b.classList.toggle('selected',b===el));
-    $('appearancePreview').src=el.dataset.image;toast('A imagem foi atualizada apenas nesta prévia.');
+    $('appearancePreview').src=el.dataset.image;
+    if (currentContent) currentContent.appearance.heroImage = '/assets/'+el.dataset.image.split('/assets/').pop();
+    setDirty();toast('Imagem principal alterada. Publique para atualizar o site.');
   }));
+  $('publishChanges').addEventListener('click',publishChanges);
+  document.addEventListener('luckas:authenticated',loadContent);
   renderServices();renderGalleries();renderPromotions();renderTestimonials();resetCreateForm();
 })();

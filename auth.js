@@ -60,6 +60,7 @@
       .trim().split(/\s+/).slice(0, 2).map(part => part[0]).join('').toUpperCase();
     document.documentElement.classList.remove('auth-locked');
     loginGate.setAttribute('hidden', '');
+    document.dispatchEvent(new CustomEvent('luckas:authenticated', {detail:{email:account.email}}));
   }
 
   async function handleCredential({ credential }) {
@@ -111,6 +112,21 @@
   logoutButton.addEventListener('click', () => {
     lockPanel('Você saiu do painel. Entre novamente para continuar.');
     window.scrollTo(0, 0);
+  });
+
+  // Token disponível apenas em memória; o Worker revalida cada publicação.
+  window.LuckasAdminAuth = Object.freeze({
+    async publish(content, expectedRevision) {
+      if (!currentToken) throw new Error('Entre com Google antes de publicar.');
+      const response = await fetch('https://luckas-fotografia-api.hudsonamorim08.workers.dev/api/admin/content', {
+        method:'PUT', cache:'no-store',
+        headers:{Authorization:`Bearer ${currentToken}`,'Content-Type':'application/json'},
+        body:JSON.stringify({content, expectedRevision}),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `Não foi possível publicar (HTTP ${response.status}).`);
+      return result;
+    },
   });
 
   // Se a aba ficou aberta, a API verifica novamente a validade do token.

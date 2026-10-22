@@ -62,11 +62,22 @@
   cursor: pointer;
 }
 .logout-button:hover { background: #ecebe8; }
+.publication-toolbar {
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  background:#f5f2eb; border:1px solid #e7e1d7; border-radius:12px;
+  padding:16px 20px; margin:16px 0 26px;
+}
+.publication-toolbar > div { display:flex; flex-direction:column; gap:5px; }
+.publication-toolbar strong { color:#313331; font-size:14px; }
+.publication-toolbar small { color:#666761; line-height:1.45; font-size:12px; }
+.publication-toolbar .button { flex-shrink:0; }
+.publication-toolbar button:disabled { opacity:.5; cursor:not-allowed; }
 @media (max-width: 680px) {
   .login-layout { gap: 54px; }
   .login-brand { flex-wrap: wrap; }
   .login-brand span { font-size: 8px; }
   .topbar-right .logout-button { padding: 7px 9px; }
+  .publication-toolbar { align-items:stretch; flex-direction:column; }
 }
 @media (prefers-reduced-motion: reduce) {
   .login-gate *, .login-gate *::before, .login-gate *::after { animation: none !important; transition: none !important; }
