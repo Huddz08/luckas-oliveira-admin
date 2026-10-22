@@ -30,15 +30,17 @@
     {id:2,name:'Ana & Pedro',service:'Ensaio de casal',text:'Luckas conseguiu registrar os pequenos momentos que fazem a nossa história ser tão nossa.'},
     {id:3,name:'Camila R.',service:'Fotografia de evento',text:'As imagens trouxeram de volta a energia da festa. Foi especial rever todos aqueles detalhes.'}
   ];
-  const names = {overview:'Visão geral',galleries:'Galerias de clientes',create:'Nova galeria',catalog:'Serviços e pacotes',promotions:'Promoções',appearance:'Aparência do site',testimonials:'Depoimentos',settings:'Configurações'};
+  const names = {overview:'Visão geral',galleries:'Galerias de clientes',create:'Nova galeria',catalog:'Serviços e pacotes',promotions:'Promoções',media:'Fotografias do site',appearance:'Aparência do site',testimonials:'Depoimentos',settings:'Configurações'};
   let filter = 'all', lastCreated = null, previewGallery = null, selectedPhotos = new Set(), toastTimer = null;
   const CONTENT_API = 'https://luckas-fotografia-api.hudsonamorim08.workers.dev/api/content';
   const PUBLIC_CONTENT = 'https://huddz08.github.io/Luckas-oliveira-fotografo-teste/content/';
+  const PUBLIC_SITE = 'https://huddz08.github.io/Luckas-oliveira-fotografo-teste';
   const CONTENT_NAMES = ['services','portfolio','testimonials','about','appearance','promotion'];
   let currentContent = null;
   let currentRevision = null;
   let contentReady = false;
   let dirty = false;
+  const imageUrl = path => typeof path === 'string' && path.startsWith('/assets/') ? PUBLIC_SITE + path : path;
   function setSyncMessage(message) { $('syncStatus').textContent = message; }
   function setDirty() {
     dirty = true;
@@ -67,7 +69,7 @@
         const cover = album?.cover || '/assets/portrait.webp';
         return {id:i+1,publicId:s.id,name:s.title,category:s.category,description:s.description,
           price:s.price,details:[...s.details],visible:s.visible,promotion:{...s.promotion},
-          image:cover.startsWith('/') ? 'https://huddz08.github.io/Luckas-oliveira-fotografo-teste'+cover : cover};
+          image:imageUrl(cover)};
       }));
       promotions.splice(0,promotions.length);
       const global = currentContent.promotion;
@@ -80,15 +82,12 @@
             discount:Math.round((1-s.promotion.price/s.price)*10000)/100,end:s.promotion.validUntil || ''});
         }
       });
-      $('appearanceOptions').querySelectorAll('button').forEach(button => {
-        const path = '/assets/'+button.dataset.image.split('/assets/').pop();
-        button.classList.toggle('selected',currentContent.appearance.heroImage === path);
-        if (currentContent.appearance.heroImage === path) $('appearancePreview').src = button.dataset.image;
-      });
+      $('appearancePreview').src = imageUrl(currentContent.appearance.heroImage);
       contentReady = true; dirty = false;
       $('publishChanges').disabled = true;
       setSyncMessage(live.configured ? 'Conteúdo carregado da Cloudflare. Tudo atualizado.' : 'Conteúdo inicial carregado. Você pode editar e publicar quando o KV estiver configurado.');
       renderServices();renderPromotions();renderGalleries();
+      document.dispatchEvent(new Event('luckas:contentloaded'));
     } catch (error) {
       contentReady = false;
       $('publishChanges').disabled = true;
@@ -111,7 +110,8 @@
           photos:[{image:'/assets/portrait.webp',caption:'Imagem ilustrativa — aguarda fotos de Luckas'}]});
       }
     });
-    next.promotion = {active:false,label:'',title:'',description:'',applyToAll:false,discountPercent:0};
+    next.promotion = {active:false,label:'',title:'',description:'',applyToAll:false,discountPercent:0,
+      image:currentContent.promotion.image || null};
     [...promotions].reverse().filter(validPromotion).forEach(p=>{
       if (p.serviceId==='all') {
         next.promotion = {active:true,label:p.name,title:p.name,
@@ -191,6 +191,22 @@
     populateServiceOptions();
     renderOverview();
   }
+  // Media editor edits the same draft that the Publish button sends to the API.
+  window.LuckasSiteEditor = Object.freeze({
+    getContent: () => currentContent,
+    imageUrl,
+    update(mutator) {
+      if (!contentReady || !currentContent) throw new Error('Aguarde o carregamento do conteúdo.');
+      mutator(currentContent);
+      services.forEach(service => {
+        const album = currentContent.portfolio.find(item => item.serviceId === service.publicId);
+        if (album) service.image = imageUrl(album.cover);
+      });
+      $('appearancePreview').src = imageUrl(currentContent.appearance.heroImage);
+      renderServices();
+      setDirty();
+    },
+  });
   function populateServiceOptions() {
     const currentGallery = $('galleryService').value;
     $('galleryService').innerHTML = `<option value="">Escolha o tipo de ensaio</option>` + services.map(s => `<option value="${s.id}">${safe(s.name)}</option>`).join('');

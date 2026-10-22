@@ -116,6 +116,19 @@
 
   // Token disponível apenas em memória; o Worker revalida cada publicação.
   window.LuckasAdminAuth = Object.freeze({
+    async uploadImage(file) {
+      if (!currentToken) throw new Error('Entre com Google antes de enviar fotos.');
+      const form = new FormData();
+      form.append('image',file,file.name);
+      const response = await fetch('https://luckas-fotografia-api.hudsonamorim08.workers.dev/api/admin/images', {
+        method:'POST',cache:'no-store',
+        headers:{Authorization:`Bearer ${currentToken}`},
+        body:form,
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `Falha ao enviar imagem (HTTP ${response.status}).`);
+      return result;
+    },
     async publish(content, expectedRevision) {
       if (!currentToken) throw new Error('Entre com Google antes de publicar.');
       const response = await fetch('https://luckas-fotografia-api.hudsonamorim08.workers.dev/api/admin/content', {

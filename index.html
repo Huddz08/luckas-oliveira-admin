@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="media.css">
 </head>
 <body>
   <section id="loginGate" class="login-gate" aria-labelledby="loginTitle">
@@ -27,7 +28,7 @@
           <div id="googleSignInButton" aria-label="Entrar com Google"></div>
           <p id="loginStatus" role="status" aria-live="polite">Preparando o acesso seguro…</p>
         </div>
-        <p class="login-disclaimer">Acesso exclusivo de Luckas e Hudson. Nesta etapa, as alterações de conteúdo ainda são demonstrações.</p>
+        <p class="login-disclaimer">Acesso exclusivo de Luckas e Hudson. Serviços, promoções e imagens públicas podem ser publicados; galerias privadas continuam em demonstração.</p>
       </div>
       <p class="login-footer">LUCKAS OLIVEIRA FOTOGRAFIA · PAINEL ADMINISTRATIVO</p>
     </div>
@@ -64,6 +65,7 @@
         <button class="nav-link" data-view="galleries"><svg><use href="#i-gallery"/></svg><span>Galerias de clientes</span><span class="nav-number" id="navGalleryCount">03</span></button>
         <button class="nav-link" data-view="catalog"><svg><use href="#i-tag"/></svg><span>Serviços e pacotes</span></button>
         <button class="nav-link" data-view="promotions"><svg><use href="#i-spark"/></svg><span>Promoções</span></button>
+        <button class="nav-link" data-view="media"><svg><use href="#i-gallery"/></svg><span>Fotografias do site</span></button>
         <button class="nav-link" data-view="appearance"><svg><use href="#i-eye"/></svg><span>Aparência do site</span></button>
         <button class="nav-link" data-view="testimonials"><svg><use href="#i-users"/></svg><span>Depoimentos</span></button>
       </nav>
@@ -80,8 +82,20 @@
       </header>
 
       <div class="page-wrap">
-        <div class="demo-alert"><svg><use href="#i-lock"/></svg><p><strong>Painel em integração.</strong> Preços, serviços, promoções e imagem principal podem ser preparados aqui e enviados ao site público pelo botão Publicar. As galerias de clientes e o Drive ainda são apenas simulações: não insira dados ou links privados.</p><span>EM TESTE</span></div>
+        <div class="demo-alert"><svg><use href="#i-lock"/></svg><p><strong>Painel em integração.</strong> Serviços, promoções e fotografias do site público podem ser preparados aqui e publicados. O envio de imagens depende de conectar o R2 na Cloudflare. As galerias privadas e o Google Drive ainda são demonstrações: não insira dados ou links privados.</p><span>EM TESTE</span></div>
         <div class="publication-toolbar" aria-live="polite"><div><strong>Atualização do site público</strong><small id="syncStatus">Entre com Google para carregar o conteúdo publicado.</small></div><button class="button dark" id="publishChanges" type="button" disabled>Publicar alterações <svg><use href="#i-arrow"/></svg></button></div>
+
+        <section class="view" id="view-media">
+          <div class="page-title-row"><div><p class="eyebrow">ACERVO AUTORAL <span class="eyebrow-rule"></span> 05</p><h1>Fotografias <em>do site.</em></h1><p class="intro">Envie suas próprias fotografias. Escolha capas, reorganize imagens e publique quando estiver satisfeito.</p></div></div>
+          <div class="media-instructions panel"><span class="media-instructions-icon">✦</span><div><strong>Suas fotos, do seu jeito</strong><p>As imagens novas ficam guardadas no armazenamento R2. O público só verá as fotos que você selecionar e publicar. Aqui não ficam os ensaios privados dos clientes.</p></div><span id="mediaUploadStatus" role="status">Pronto para enviar</span></div>
+          <div class="media-section-title"><h2>Identidade visual</h2><p>Capa principal, foto do fotógrafo, imagem de apoio e campanhas.</p></div>
+          <div class="media-appearance-grid" id="mediaAppearance"><p>Carregando imagens…</p></div>
+          <div class="media-section-title"><h2>Portfólios por serviço</h2><p>Troque a capa e escolha quais fotos seus visitantes verão em cada tipo de ensaio.</p></div>
+          <div class="media-albums" id="mediaPortfolio"><p>Carregando serviços…</p></div>
+          <div class="media-section-title"><h2>Fotos dos depoimentos</h2><p>Troque os retratos ilustrativos pelas imagens autorizadas pelos clientes.</p></div>
+          <div class="media-testimonials" id="mediaTestimonials"><p>Carregando depoimentos…</p></div>
+          <input type="file" id="mediaFileInput" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        </section>
 
         <section class="view current" id="view-overview">
           <div class="page-title-row"><div><p class="eyebrow">PAINEL DE CONTROLE <span class="eyebrow-rule"></span> 01</p><h1>Bom dia, <em>Luckas.</em></h1><p class="intro">Seu estúdio, seus clientes e suas entregas em um só lugar.</p></div><button class="button dark" id="newFromOverview"><svg><use href="#i-plus"/></svg> Nova galeria</button></div>
@@ -117,7 +131,7 @@
 
         <section class="view" id="view-promotions"><div class="page-title-row"><div><p class="eyebrow">CAMPANHAS <span class="eyebrow-rule"></span> 04</p><h1>Promoções <em>especiais.</em></h1><p class="intro">Crie uma condição especial para um pacote ou para todo o catálogo.</p></div></div><div class="two-col"><form class="panel form-panel" id="promotionForm"><div class="form-heading"><span>✳</span><div><h2>Nova campanha</h2><p>Depois de criar, clique em Publicar alterações para entrar no site.</p></div></div><div class="form-grid"><label class="wide">Nome da promoção<input id="promoName" required placeholder="Ex.: Semana dos Retratos"></label><label class="wide">Aplicar a<select id="promoService"><option value="all">Todos os serviços</option></select></label><label>Desconto (%)<input id="promoDiscount" required type="number" min="1" max="90" value="10"></label><label>Válida até<input id="promoEnd" type="date"></label></div><button class="button dark" type="submit">Preparar promoção <svg><use href="#i-arrow"/></svg></button></form><div class="panel promo-panel"><p class="eyebrow small">CAMPANHAS CADASTRADAS</p><h2>Em destaque</h2><div id="promotionsList"></div></div></div></section>
 
-        <section class="view" id="view-appearance"><div class="page-title-row"><div><p class="eyebrow">IDENTIDADE VISUAL <span class="eyebrow-rule"></span> 05</p><h1>Seu site, <em>seu olhar.</em></h1><p class="intro">Escolha quais fotografias ganham destaque na página inicial.</p></div></div><div class="panel appearance-panel"><div class="form-heading"><span>✦</span><div><h2>Imagem principal</h2><p>Escolha uma das imagens já hospedadas. O envio de fotos novas será conectado depois.</p></div></div><div class="image-options" id="appearanceOptions"><button data-image="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/hero-wedding.webp"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/hero-wedding.webp" alt="Foto de casamento"><span>Original</span></button><button data-image="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-casal.webp"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-casal.webp" alt="Casal"><span>Casais</span></button><button data-image="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-estudio.webp"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-estudio.webp" alt="Retrato em estúdio"><span>Estúdio</span></button><button data-image="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-gastronomia.webp"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-gastronomia.webp" alt="Gastronomia"><span>Gastronomia</span></button></div><div class="appearance-preview"><img id="appearancePreview" src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/hero-wedding.webp" alt="Prévia da imagem principal"><div><small>LUCKAS OLIVEIRA · FOTOGRAFIA AUTORAL</small><strong>O tempo passa.<br><em>A história fica.</em></strong></div></div><p class="field-tip">Depois de escolher, clique em Publicar alterações para aplicar ao site público.</p></div></section>
+        <section class="view" id="view-appearance"><div class="page-title-row"><div><p class="eyebrow">IDENTIDADE VISUAL <span class="eyebrow-rule"></span> 05</p><h1>Seu site, <em>seu olhar.</em></h1><p class="intro">Destaque as fotografias do próprio Luckas na página inicial.</p></div></div><div class="panel appearance-panel"><div class="form-heading"><span>✦</span><div><h2>Imagem principal</h2><p>Você pode substituir esta foto por qualquer fotografia autoral enviada à Biblioteca de Imagens.</p></div></div><div id="appearanceOptions"></div><div class="appearance-preview"><img id="appearancePreview" src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/hero-wedding.webp" alt="Prévia da imagem principal"><div><small>LUCKAS OLIVEIRA · FOTOGRAFIA AUTORAL</small><strong>O tempo passa.<em> A história fica.</em></strong></div></div><button type="button" class="button dark" id="appearanceToMedia">Substituir por uma foto minha <svg><use href="#i-arrow"/></svg></button><p class="field-tip">Depois de enviar a foto, clique em Publicar alterações para atualizar o site público.</p></div></section>
 
         <section class="view" id="view-testimonials"><div class="page-title-row"><div><p class="eyebrow">HISTÓRIAS REAIS, NO FUTURO <span class="eyebrow-rule"></span> 06</p><h1>Depoimentos <em>dos clientes.</em></h1><p class="intro">Gerencie os relatos que aparecem no site. Os exemplos abaixo são fictícios.</p></div><button class="button dark" id="addTestimonial"><svg><use href="#i-plus"/></svg> Novo depoimento</button></div><div class="testimonial-admin-grid" id="testimonialsList"></div></section>
 
@@ -136,6 +150,7 @@
 
   <div id="toast" role="status" aria-live="polite"></div>
   <script src="app.js" defer></script>
+  <script src="media.js" defer></script>
   <script src="auth.js" defer></script>
 </body>
 </html>
