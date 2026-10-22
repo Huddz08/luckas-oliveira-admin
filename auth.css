@@ -1,0 +1,73 @@
+/* Gate visual; permissões reais são verificadas na API Cloudflare. */
+.auth-locked .app,
+.auth-locked dialog,
+.auth-locked #toast { display: none !important; }
+
+.login-gate {
+  display: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #262727;
+  color: #f3f0ea;
+  font-family: 'DM Sans', sans-serif;
+}
+.auth-locked .login-gate { display: flex; }
+.login-layout {
+  width: min(100%, 680px);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(30px, 6vh, 70px) clamp(24px, 6vw, 70px) 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 64px;
+}
+.login-brand { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.login-brand img { max-width: 175px; width: 45%; height: auto; object-fit: contain; filter: brightness(1.8); }
+.login-brand span, .login-footer, .login-eyebrow {
+  font-size: 10px;
+  letter-spacing: .19em;
+  color: #ada89c;
+  font-weight: 700;
+}
+.login-brand span { text-align: right; }
+.login-eyebrow { margin-bottom: 22px; }
+.login-content h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(60px, 10vw, 90px);
+  font-weight: 400;
+  line-height: 0.99;
+  letter-spacing: -.035em;
+  margin: 0;
+}
+.login-content h1 em { font-weight: 400; color: #bcaa8e; }
+.login-description { color: #c3c0b8; font-size: 15px; line-height: 1.7; max-width: 440px; margin: 30px 0; }
+.login-auth-panel {
+  background: #353635;
+  border: 1px solid #55534e;
+  border-radius: 14px;
+  padding: 24px;
+  min-height: 115px;
+  max-width: 440px;
+}
+.login-auth-panel #googleSignInButton { min-height: 44px; }
+.login-auth-panel #loginStatus { margin: 12px 0 0; color: #ded9cd; font-size: 12px; line-height: 1.5; }
+.login-auth-panel #loginStatus.is-error { color: #ffc1ae; }
+.login-disclaimer { font-size: 11px; line-height: 1.6; color: #928f88; max-width: 440px; margin: 19px 0 0; }
+.login-footer { border-top: 1px solid #52524e; padding-top: 22px; }
+.logout-button {
+  border: 1px solid #d4d3cf; background: transparent; color: #535554;
+  border-radius: 20px; padding: 7px 13px; font: 600 12px 'DM Sans',sans-serif;
+  cursor: pointer;
+}
+.logout-button:hover { background: #ecebe8; }
+@media (max-width: 680px) {
+  .login-layout { gap: 54px; }
+  .login-brand { flex-wrap: wrap; }
+  .login-brand span { font-size: 8px; }
+  .topbar-right .logout-button { padding: 7px 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .login-gate *, .login-gate *::before, .login-gate *::after { animation: none !important; transition: none !important; }
+}

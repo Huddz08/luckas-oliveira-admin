@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR" class="auth-locked">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#252629">
+  <meta name="description" content="Painel administrativo de Luckas Oliveira Fotografia, com acesso por conta Google autorizada.">
+  <title>Studio Admin — Luckas Oliveira</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <section id="loginGate" class="login-gate" aria-labelledby="loginTitle">
+    <div class="login-layout">
+      <div class="login-brand">
+        <img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/luckas-oliveira-logo-grafite.png" alt="Luckas Oliveira Fotografia">
+        <span>STUDIO MANAGEMENT</span>
+      </div>
+      <div class="login-content">
+        <p class="login-eyebrow">ACESSO ADMINISTRATIVO</p>
+        <h1 id="loginTitle">Seu estúdio.<br><em>Seu espaço.</em></h1>
+        <p class="login-description">Entre com a conta Google autorizada para acessar as configurações do site e o planejamento das galerias.</p>
+        <div class="login-auth-panel">
+          <div id="googleSignInButton" aria-label="Entrar com Google"></div>
+          <p id="loginStatus" role="status" aria-live="polite">Preparando o acesso seguro…</p>
+        </div>
+        <p class="login-disclaimer">Acesso exclusivo de Luckas e Hudson. Nesta etapa, as alterações de conteúdo ainda são demonstrações.</p>
+      </div>
+      <p class="login-footer">LUCKAS OLIVEIRA FOTOGRAFIA · PAINEL ADMINISTRATIVO</p>
+    </div>
+  </section>
+  <svg class="icon-sprites" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-gallery" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20 12 12 20 3 11V3h8z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.8 7.2L21 12l-7.2 1.8L12 21l-1.8-7.2L3 12l7.2-1.8Z"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path d="M10 3h4l.7 2.2 2.1 1.2 2.3-.4 2 3.5-1.6 1.8v2.4l1.6 1.8-2 3.5-2.3-.4-2.1 1.2L14 22h-4l-.7-2.2-2.1-1.2-2.3.4-2-3.5 1.6-1.8v-2.4L2.9 9.5l2-3.5 2.3.4 2.1-1.2z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2"/><path d="M17 5a3 3 0 0 1 0 6m1 3a5 5 0 0 1 3 5v1"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13 5h6v6m0-6-9 9"/><path d="M19 13v6H5V5h6"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v11H3z"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="9" r="4"/><path d="m11 12 9 9m-3-3 2-2m-5-1 2-2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20 5a5 5 0 0 0-8 1 5 5 0 0 0-8-1c-2 3 0 6 8 13 8-7 10-10 8-13Z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></symbol>
+  </svg>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-wrap"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/luckas-oliveira-logo-grafite.png" alt="Luckas Oliveira Fotografia" class="brand-logo"><span class="brand-caption">STUDIO MANAGEMENT</span></div>
+      <p class="nav-heading">WORKSPACE</p>
+      <nav class="sidebar-nav" aria-label="Navegação do administrador">
+        <button class="nav-link active" data-view="overview"><svg><use href="#i-grid"/></svg><span>Visão geral</span></button>
+        <button class="nav-link" data-view="galleries"><svg><use href="#i-gallery"/></svg><span>Galerias de clientes</span><span class="nav-number" id="navGalleryCount">03</span></button>
+        <button class="nav-link" data-view="catalog"><svg><use href="#i-tag"/></svg><span>Serviços e pacotes</span></button>
+        <button class="nav-link" data-view="promotions"><svg><use href="#i-spark"/></svg><span>Promoções</span></button>
+        <button class="nav-link" data-view="appearance"><svg><use href="#i-eye"/></svg><span>Aparência do site</span></button>
+        <button class="nav-link" data-view="testimonials"><svg><use href="#i-users"/></svg><span>Depoimentos</span></button>
+      </nav>
+      <p class="nav-heading heading-settings">PREFERÊNCIAS</p>
+      <nav class="sidebar-nav"><button class="nav-link" data-view="settings"><svg><use href="#i-gear"/></svg><span>Configurações</span></button></nav>
+      <div class="sidebar-bottom"><div class="sidebar-dot"></div><div><strong>Ambiente de demonstração</strong><span>Google Drive não conectado</span></div></div>
+      <div class="sidebar-foot">LUCKAS OLIVEIRA © 2026<br>PAINEL CONCEITUAL · VERSÃO 0.1</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left"><button class="icon-button mobile-menu" id="mobileMenu" aria-label="Abrir menu"><svg><use href="#i-menu"/></svg></button><span class="crumb-muted">Studio Admin</span><span class="crumb-slash">/</span><span id="breadcrumb">Visão geral</span></div>
+        <div class="topbar-right"><a class="view-site" href="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/" target="_blank" rel="noopener">Ver site público <svg><use href="#i-external"/></svg></a><span class="top-divider"></span><div class="profile"><span class="avatar" id="adminAvatar">—</span><div><strong id="adminName">Administrador</strong><small id="adminEmail">Conta Google verificada</small></div></div><button class="logout-button" id="logoutButton" type="button">Sair</button></div>
+      </header>
+
+      <div class="page-wrap">
+        <div class="demo-alert"><svg><use href="#i-lock"/></svg><p><strong>Protótipo privado para avaliação.</strong> As alterações funcionam apenas nesta simulação e não atualizam o site ou o Google Drive. Não use dados reais de clientes, links privados nem senhas verdadeiras aqui.</p><span>DEMO</span></div>
+
+        <section class="view current" id="view-overview">
+          <div class="page-title-row"><div><p class="eyebrow">PAINEL DE CONTROLE <span class="eyebrow-rule"></span> 01</p><h1>Bom dia, <em>Luckas.</em></h1><p class="intro">Seu estúdio, seus clientes e suas entregas em um só lugar.</p></div><button class="button dark" id="newFromOverview"><svg><use href="#i-plus"/></svg> Nova galeria</button></div>
+          <div class="stats-grid">
+            <article class="stat-card"><span>GALERIAS CRIADAS</span><strong id="statTotal">03</strong><div class="stat-bottom">No painel de demonstração <svg><use href="#i-gallery"/></svg></div></article>
+            <article class="stat-card"><span>AGUARDANDO SELEÇÃO</span><strong id="statSelection">01</strong><div class="stat-bottom">Clientes escolhendo suas fotos <svg><use href="#i-heart"/></svg></div></article>
+            <article class="stat-card"><span>ENTREGAS FINAIS</span><strong id="statDelivery">02</strong><div class="stat-bottom">Galerias prontas para baixar <svg><use href="#i-check"/></svg></div></article>
+            <article class="stat-card accent-stat"><span>SERVIÇOS NO PORTFÓLIO</span><strong id="statServices">08</strong><div class="stat-bottom">Pacotes editáveis <svg><use href="#i-tag"/></svg></div></article>
+          </div>
+          <div class="overview-grid">
+            <section class="panel recent-panel"><div class="panel-head"><div><p class="eyebrow small">ENTREGAS</p><h2>Galerias recentes</h2></div><button class="text-button" data-view="galleries">Ver todas <svg><use href="#i-arrow"/></svg></button></div><div id="recentGalleries"></div></section>
+            <section class="panel flow-panel"><p class="eyebrow small">FLUXO DE TRABALHO</p><h2>Do Drive até o cliente.</h2><p>O processo que estamos preparando para o estúdio.</p><div class="step-timeline"><div><span>01</span><section><strong>Organize no Drive</strong><small>Uma pasta para cada ensaio.</small></section></div><div><span>02</span><section><strong>Crie uma galeria</strong><small>Escolha o tipo de entrega e a palavra-passe.</small></section></div><div><span>03</span><section><strong>Envie pelo WhatsApp</strong><small>O cliente acessa pelo próprio site.</small></section></div></div><button class="button light" id="newFromFlow">Simular criação <svg><use href="#i-arrow"/></svg></button></section>
+          </div>
+        </section>
+
+        <section class="view" id="view-galleries">
+          <div class="page-title-row"><div><p class="eyebrow">ÁREA DO CLIENTE <span class="eyebrow-rule"></span> 02</p><h1>Galerias <em>privadas.</em></h1><p class="intro">Organize cada ensaio, acompanhe seleções e prepare entregas.</p></div><button class="button dark" id="newFromGalleries"><svg><use href="#i-plus"/></svg> Criar galeria</button></div>
+          <div class="panel list-panel"><div class="toolbar"><label class="searchbox"><span>⌕</span><input id="gallerySearch" type="search" placeholder="Buscar cliente ou ensaio"></label><div class="segmented" role="group" aria-label="Filtrar galerias"><button class="selected" data-gallery-filter="all">Todas</button><button data-gallery-filter="selection">Seleção</button><button data-gallery-filter="final">Entrega final</button></div></div><div id="galleryList"></div></div>
+        </section>
+
+        <section class="view" id="view-create">
+          <div class="create-header"><button class="back-link" data-view="galleries">← Voltar às galerias</button><p class="eyebrow">NOVO ACESSO DE CLIENTE</p><h1>Uma nova <em>história.</em></h1><p class="intro">Defina como o cliente verá o ensaio. Essas opções poderão ser alteradas para cada nova galeria.</p></div>
+          <div class="creation-layout"><form id="galleryForm" class="creation-form" novalidate>
+            <article class="panel form-panel"><div class="form-heading"><span>01</span><div><h2>Identificação</h2><p>Organize a entrega para encontrar tudo depois.</p></div></div><div class="form-grid"><label>Nome do ensaio <span>*</span><input id="galleryTitle" required maxlength="80" placeholder="Ex.: Ensaio de Ana & Pedro"></label><label>Cliente <span>*</span><input id="galleryClient" required maxlength="70" placeholder="Ex.: Ana e Pedro"></label><label class="wide">Serviço relacionado <span>*</span><select id="galleryService" required></select></label></div></article>
+            <article class="panel form-panel"><div class="form-heading"><span>02</span><div><h2>Forma de entrega</h2><p>Luckas escolhe uma opção para cada ensaio.</p></div></div><div class="mode-grid"><label class="mode-card selected" id="modeSelectionCard"><input type="radio" name="deliveryMode" value="selection" checked><span class="mode-icon"><svg><use href="#i-heart"/></svg></span><strong>Seleção de fotos</strong><small>O cliente marca suas favoritas. Luckas recebe a seleção e trata as escolhidas.</small><span class="radio-visual"></span></label><label class="mode-card" id="modeFinalCard"><input type="radio" name="deliveryMode" value="final"><span class="mode-icon"><svg><use href="#i-download"/></svg></span><strong>Entrega final</strong><small>As fotos já estão prontas. O cliente visualiza e baixa sua galeria.</small><span class="radio-visual"></span></label></div><div class="conditional-field" id="selectionLimitWrap"><label>Quantas fotos o cliente pode selecionar?<input id="selectionLimit" type="number" min="1" max="999" value="30"></label><p>O contador aparece para o cliente enquanto ele escolhe. No sistema real, Luckas receberá a lista ao finalizar.</p></div></article>
+            <article class="panel form-panel"><div class="form-heading"><span>03</span><div><h2>Pasta no Google Drive</h2><p>As fotografias continuarão na conta do Luckas.</p></div></div><div class="drive-input"><svg><use href="#i-folder"/></svg><input id="driveFolder" type="text" placeholder="Cole o link da pasta do Google Drive" aria-label="Link da pasta do Google Drive"><button type="button" id="useDemoFolder">Usar exemplo</button></div><p class="field-tip"><svg><use href="#i-lock"/></svg> Nesta demonstração, usamos apenas uma pasta fictícia. A integração real será feita com autenticação do Google, sem tornar os arquivos públicos.</p></article>
+            <article class="panel form-panel"><div class="form-heading"><span>04</span><div><h2>Acesso do cliente</h2><p>Crie uma palavra-passe individual para essa galeria.</p></div></div><div class="access-row"><label>Palavra-passe <span>*</span><div class="password-input"><svg><use href="#i-key"/></svg><input id="galleryPassword" required minlength="8" maxlength="40" spellcheck="false" autocomplete="off"><button type="button" id="generatePassword">Gerar outra</button></div></label><label>Validade do acesso<select id="galleryExpiry"><option value="30">30 dias</option><option value="7">7 dias</option><option value="15">15 dias</option><option value="0">Sem prazo definido</option></select></label></div><p class="field-tip">Na versão real, a palavra-passe será verificada no servidor, com limites de tentativas e sem aparecer no código público do site.</p></article>
+            <div class="submit-row"><p><svg><use href="#i-lock"/></svg> Criação simulada, sem compartilhar arquivos.</p><button class="button dark" type="submit">Criar galeria de demonstração <svg><use href="#i-arrow"/></svg></button></div>
+          </form><aside class="creation-aside"><div class="aside-sticky"><div class="preview-cover"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-casal.webp" alt="Casal em ensaio ilustrativo"><span>PRÉVIA DA GALERIA</span></div><div class="summary-card"><small>COMO O CLIENTE VERÁ</small><h3 id="summaryName">Sua galeria especial</h3><p id="summaryClient">Personalizada para cada cliente</p><div class="summary-line"><span>Experiência</span><strong id="summaryMode">Seleção de fotos</strong></div><div class="summary-line"><span>Quantidade</span><strong id="summaryLimit">30 favoritas</strong></div><div class="summary-line"><span>Validade</span><strong id="summaryExpiry">30 dias</strong></div><button class="button outline" type="button" id="openSamplePreview"><svg><use href="#i-eye"/></svg> Ver prévia do cliente</button></div><p class="aside-note">As imagens ao lado são ilustrativas. Nenhuma foto real será enviada neste protótipo.</p></div></aside></div>
+        </section>
+
+        <section class="view" id="view-catalog"><div class="page-title-row"><div><p class="eyebrow">SITE PÚBLICO <span class="eyebrow-rule"></span> 03</p><h1>Serviços & <em>pacotes.</em></h1><p class="intro">Aqui o Luckas poderá ajustar valores, descrições e serviços oferecidos.</p></div><button class="button dark" id="addService"><svg><use href="#i-plus"/></svg> Adicionar serviço</button></div><div class="panel list-panel"><div class="list-heading"><span>SERVIÇO</span><span>VALOR BASE</span><span>AÇÃO</span></div><div id="servicesList"></div></div></section>
+
+        <section class="view" id="view-promotions"><div class="page-title-row"><div><p class="eyebrow">CAMPANHAS <span class="eyebrow-rule"></span> 04</p><h1>Promoções <em>especiais.</em></h1><p class="intro">Crie uma condição especial para um pacote ou para todo o catálogo.</p></div></div><div class="two-col"><form class="panel form-panel" id="promotionForm"><div class="form-heading"><span>✳</span><div><h2>Nova campanha</h2><p>Campos editáveis nesta demonstração.</p></div></div><div class="form-grid"><label class="wide">Nome da promoção<input id="promoName" required placeholder="Ex.: Semana dos Retratos"></label><label class="wide">Aplicar a<select id="promoService"><option value="all">Todos os serviços</option></select></label><label>Desconto (%)<input id="promoDiscount" required type="number" min="1" max="90" value="10"></label><label>Válida até<input id="promoEnd" type="date"></label></div><button class="button dark" type="submit">Criar promoção simulada <svg><use href="#i-arrow"/></svg></button></form><div class="panel promo-panel"><p class="eyebrow small">CAMPANHAS CADASTRADAS</p><h2>Em destaque</h2><div id="promotionsList"></div></div></div></section>
+
+        <section class="view" id="view-appearance"><div class="page-title-row"><div><p class="eyebrow">IDENTIDADE VISUAL <span class="eyebrow-rule"></span> 05</p><h1>Seu site, <em>seu olhar.</em></h1><p class="intro">Escolha quais fotografias ganham destaque na página inicial.</p></div></div><div class="panel appearance-panel"><div class="form-heading"><span>✦</span><div><h2>Imagem principal</h2><p>Escolha entre imagens de demonstração; o envio das fotos reais será conectado depois.</p></div></div><div class="image-options" id="appearanceOptions"><button data-image="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-casal.webp" class="selected"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-casal.webp" alt="Casal"><span>Casais</span></button><button data-image="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-estudio.webp"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-estudio.webp" alt="Retrato em estúdio"><span>Estúdio</span></button><button data-image="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-gastronomia.webp"><img src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-gastronomia.webp" alt="Gastronomia"><span>Gastronomia</span></button></div><div class="appearance-preview"><img id="appearancePreview" src="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/assets/portfolio-casal.webp" alt="Prévia da imagem principal"><div><small>LUCKAS OLIVEIRA · FOTOGRAFIA AUTORAL</small><strong>O tempo passa.<br><em>A história fica.</em></strong></div></div><p class="field-tip">Nesta fase, a escolha só modifica a prévia local do painel, não o site publicado.</p></div></section>
+
+        <section class="view" id="view-testimonials"><div class="page-title-row"><div><p class="eyebrow">HISTÓRIAS REAIS, NO FUTURO <span class="eyebrow-rule"></span> 06</p><h1>Depoimentos <em>dos clientes.</em></h1><p class="intro">Gerencie os relatos que aparecem no site. Os exemplos abaixo são fictícios.</p></div><button class="button dark" id="addTestimonial"><svg><use href="#i-plus"/></svg> Novo depoimento</button></div><div class="testimonial-admin-grid" id="testimonialsList"></div></section>
+
+        <section class="view" id="view-settings"><div class="page-title-row"><div><p class="eyebrow">ACESSOS & INTEGRAÇÕES <span class="eyebrow-rule"></span> 07</p><h1>Configurações <em>do estúdio.</em></h1><p class="intro">O login Google está conectado. As próximas integrações serão feitas por etapas.</p></div></div><div class="settings-layout"><section class="panel setting-card"><span class="setting-icon"><svg><use href="#i-folder"/></svg></span><div><h2>Google Drive</h2><p>Será o armazenamento das fotos e vídeos. Uma autorização específica do Luckas permitirá acessar pastas privadas, sem expor os arquivos ao público.</p><span class="status-pill pending">Aguardando integração</span></div></section><section class="panel setting-card"><span class="setting-icon"><svg><use href="#i-lock"/></svg></span><div><h2>Login administrativo</h2><p>Sua conta Google é validada pela API antes da entrada. Apenas os dois e-mails autorizados podem fazer login. As informações fictícias deste painel não são dados privados.</p><span class="status-pill" id="googleAuthStatus">Conta autenticada</span></div></section><section class="panel setting-card"><span class="setting-icon"><svg><use href="#i-key"/></svg></span><div><h2>Galerias privadas</h2><p>Verificação da palavra-passe em servidor, tentativas limitadas e acesso temporário aos arquivos.</p><span class="status-pill pending">Aguardando backend</span></div></section><section class="panel setting-card"><span class="setting-icon"><svg><use href="#i-external"/></svg></span><div><h2>Site público</h2><p>O portfólio permanece hospedado no GitHub Pages, separado deste painel.</p><a href="https://huddz08.github.io/Luckas-oliveira-fotografo-teste/" target="_blank" rel="noopener" class="inline-link">Visitar portfólio ↗</a></div></section></div></section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="gallerySuccess" class="modal"><div class="modal-head"><div><p class="eyebrow small">GALERIA DE DEMONSTRAÇÃO</p><h2>Pronta para <em>apresentar.</em></h2></div><button class="dialog-close" data-close="gallerySuccess" aria-label="Fechar"><svg><use href="#i-x"/></svg></button></div><div class="success-symbol"><svg><use href="#i-check"/></svg></div><p id="successDescription"></p><div class="credential-box"><span>PALAVRA-PASSE</span><strong id="successPassword"></strong></div><label class="sample-message-label">Mensagem de exemplo para WhatsApp<textarea readonly id="invitationText" rows="5"></textarea></label><p class="field-tip">Essa galeria ainda não existe no site público. A mensagem contém uma marcação de demonstração e não deve ser enviada ao cliente.</p><div class="modal-actions"><button class="button outline" id="copyInvitation"><svg><use href="#i-copy"/></svg> Copiar texto de exemplo</button><button class="button dark" id="viewCreatedGallery"><svg><use href="#i-eye"/></svg> Simular visão do cliente</button></div></dialog>
+
+  <dialog id="clientPreview" class="modal client-modal"><div class="client-modal-hero"><span>LUCKAS OLIVEIRA · SUA GALERIA</span><button class="dialog-close light-close" data-close="clientPreview" aria-label="Fechar"><svg><use href="#i-x"/></svg></button><h2 id="clientPreviewTitle">Seu ensaio</h2><p id="clientPreviewSubtitle"></p></div><div class="client-modal-body"><div class="client-mode-info"><span id="clientModeBadge" class="status-pill"></span><p id="clientModeHelp"></p><strong id="selectedCounter"></strong></div><div id="clientPhotos" class="client-photo-grid"></div><div class="client-actions"><p id="clientActionNotice">Imagens ilustrativas.</p><button class="button dark" id="completeSelection">Finalizar seleção de exemplo <svg><use href="#i-check"/></svg></button></div></div></dialog>
+
+  <dialog id="serviceDialog" class="modal narrow-modal"><div class="modal-head"><div><p class="eyebrow small">CATÁLOGO · DEMO</p><h2 id="serviceDialogTitle">Editar <em>serviço.</em></h2></div><button class="dialog-close" data-close="serviceDialog" aria-label="Fechar"><svg><use href="#i-x"/></svg></button></div><form id="serviceForm" class="stacked-form"><input type="hidden" id="serviceEditId"><label>Nome do serviço<input required maxlength="90" id="serviceName"></label><label>Preço base (R$)<input required type="number" min="0" step="0.01" id="servicePrice"></label><label>Detalhes do pacote (um por linha)<textarea id="serviceDetails" rows="5"></textarea></label><button type="submit" class="button dark">Salvar nesta demonstração <svg><use href="#i-check"/></svg></button></form></dialog>
+
+  <dialog id="testimonialDialog" class="modal narrow-modal"><div class="modal-head"><div><p class="eyebrow small">RELATOS · DEMO</p><h2>Novo <em>depoimento.</em></h2></div><button class="dialog-close" data-close="testimonialDialog" aria-label="Fechar"><svg><use href="#i-x"/></svg></button></div><form id="testimonialForm" class="stacked-form"><label>Nome fictício<input required maxlength="65" id="testimonialName"></label><label>Serviço<input required maxlength="90" id="testimonialService"></label><label>Relato ilustrativo<textarea required rows="5" id="testimonialText"></textarea></label><button type="submit" class="button dark">Salvar nesta demonstração <svg><use href="#i-check"/></svg></button></form></dialog>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+  <script src="auth.js" defer></script>
+</body>
+</html>
